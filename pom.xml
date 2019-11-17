@@ -6,7 +6,7 @@
 
     <groupId>io.github.portlek</groupId>
     <artifactId>NoSpawner</artifactId>
-    <version>1.0</version>
+    <version>1.1</version>
     <packaging>jar</packaging>
 
     <name>NoSpawner</name>
@@ -61,6 +61,20 @@
     </repositories>
 
     <dependencies>
+        <dependency>
+            <groupId>com.wg</groupId>
+            <artifactId>worldguard</artifactId>
+            <version>6.1.2</version>
+            <scope>system</scope>
+            <systemPath>${project.basedir}/lib/worldguard.jar</systemPath>
+        </dependency>
+        <dependency>
+            <groupId>com.we</groupId>
+            <artifactId>worldedit</artifactId>
+            <version>6.1.2</version>
+            <scope>system</scope>
+            <systemPath>${project.basedir}/lib/worldedit.jar</systemPath>
+        </dependency>
         <dependency>
             <groupId>org.bukkit</groupId>
             <artifactId>bukkit</artifactId>
