@@ -1,0 +1,4 @@
+remove-on-chunk-load: true
+permission: '&cYou don''t have permissions to do that!'
+spawners-deleted: '&aAll spawners removed!'
+unknown-world-name: '&cThere is not world such like that!'
