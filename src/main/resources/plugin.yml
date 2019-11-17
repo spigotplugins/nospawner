@@ -11,7 +11,7 @@ commands:
   removeblock:
     permission: nospawner.command
     permission-message: No permission
-    description: Dlete all block that are in the loaded chunks
+    description: Deletes all block that are in the loaded chunks
     usage: /removeblock <block-name> [world-name]
     aliases:
       - rb
