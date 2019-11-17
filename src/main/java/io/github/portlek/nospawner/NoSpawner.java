@@ -44,10 +44,12 @@ public final class NoSpawner extends JavaPlugin implements Listener {
         }
 
         getConfig().getStringList("remove-blocks-on-chunk-load").forEach(s -> {
-            try {
-                types.add(Material.valueOf(s));
-            } catch (Exception exception) {
+            final Material material = Material.getMaterial(s);
+
+            if (material == null) {
                 getLogger().warning(String.format("%s is a wrong material name!", s));
+            } else {
+                types.add(material);
             }
         });
 
