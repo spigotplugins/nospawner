@@ -60,7 +60,7 @@ public final class NoSpawner extends JavaPlugin implements Listener {
 
         locations.remove(location);
         locations.add(location);
-        data.set("blocks." + new StringOf(location).asKey(), event.getPlayer().getUniqueId());
+        data.set("blocks." + new StringOf(location).asKey(), event.getPlayer().getUniqueId().toString());
     }
 
     @EventHandler
