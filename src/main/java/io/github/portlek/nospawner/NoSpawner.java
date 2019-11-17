@@ -1,13 +1,21 @@
 package io.github.portlek.nospawner;
 
 import com.sk89q.worldguard.bukkit.WorldGuardPlugin;
+import io.github.portlek.location.LocationOf;
+import io.github.portlek.location.StringOf;
+import io.github.portlek.mcyaml.IYaml;
+import io.github.portlek.mcyaml.YamlOf;
+import io.github.portlek.mcyaml.mck.MckFileConfiguration;
 import org.bukkit.*;
 import org.bukkit.block.Block;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
 import org.bukkit.command.PluginCommand;
+import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
+import org.bukkit.event.block.BlockBreakEvent;
+import org.bukkit.event.block.BlockPlaceEvent;
 import org.bukkit.event.world.ChunkLoadEvent;
 import org.bukkit.plugin.java.JavaPlugin;
 
@@ -19,6 +27,10 @@ import java.util.Optional;
 public final class NoSpawner extends JavaPlugin implements Listener {
 
     private final List<Material> types = new ArrayList<>();
+
+    private final IYaml data = new YamlOf(this, "data");
+
+    private final List<Location> locations = new ArrayList<>();
 
     private boolean worldGuard = false;
 
@@ -36,6 +48,31 @@ public final class NoSpawner extends JavaPlugin implements Listener {
         removeBlockPluginCommand.setTabCompleter(this);
         getServer().getPluginManager().registerEvents(this, this);
         reloadPlugin();
+    }
+
+    @EventHandler
+    public void blockPlace(BlockPlaceEvent event) {
+        if (!getConfig().getBoolean("dont-remove-blocks-placed-by-players")) {
+            return;
+        }
+
+        final Location location = event.getBlockPlaced().getLocation();
+
+        locations.remove(location);
+        locations.add(location);
+        data.set("blocks." + new StringOf(location).asKey(), event.getPlayer().getUniqueId().toString());
+    }
+
+    @EventHandler
+    public void blockPlace(BlockBreakEvent event) {
+        if (!getConfig().getBoolean("dont-remove-blocks-placed-by-players")) {
+            return;
+        }
+
+        final Location location = event.getBlock().getLocation();
+
+        locations.remove(location);
+        data.set("blocks." + new StringOf(location).asKey(), null);
     }
 
     @EventHandler
@@ -139,7 +176,9 @@ public final class NoSpawner extends JavaPlugin implements Listener {
                 for (int z = minZ; z <= maxZ; ++z) {
                     final Block block = chunk.getBlock(x,y,z);
 
-                    if (block.getType() != type || thereIsRegion(block.getLocation())) {
+                    if (block.getType() != type ||
+                        thereIsRegion(block.getLocation()) ||
+                        locations.contains(block.getLocation())) {
                         continue;
                     }
 
@@ -161,7 +200,18 @@ public final class NoSpawner extends JavaPlugin implements Listener {
     }
 
     private void reloadPlugin() {
+        data.create();
+
+        locations.clear();
         types.clear();
+
+        ConfigurationSection section = data.getSection("blocks");
+
+        if (section instanceof MckFileConfiguration) {
+            section = data.createSection("blocks");
+        }
+
+        section.getKeys(false).forEach(s -> locations.add(new LocationOf(s).value()));
 
         worldGuard = getServer().getPluginManager().getPlugin("WorldGuard") != null &&
             getServer().getPluginManager().getPlugin("WorldEdit") != null &&
