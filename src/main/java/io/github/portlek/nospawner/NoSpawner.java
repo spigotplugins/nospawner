@@ -34,32 +34,16 @@ public final class NoSpawner extends JavaPlugin implements Listener {
 
         removeBlockPluginCommand.setExecutor(this);
         removeBlockPluginCommand.setTabCompleter(this);
-
-        worldGuard = getServer().getPluginManager().getPlugin("WorldGuard") != null &&
-            getServer().getPluginManager().getPlugin("WorldEdit") != null &&
-            getConfig().getBoolean("world-guard-protection");
-
-        if (worldGuard) {
-            getLogger().info("WorldGuard hooked!");
-        }
-
-        getConfig().getStringList("remove-blocks-on-chunk-load").forEach(s -> {
-            final Material material = Material.getMaterial(s);
-
-            if (material == null) {
-                getLogger().warning(String.format("%s is a wrong material name!", s));
-            } else {
-                types.add(material);
-            }
-        });
-
-        if (getConfig().getBoolean("remove-on-chunk-load")) {
-            getServer().getPluginManager().registerEvents(this, this);
-        }
+        getServer().getPluginManager().registerEvents(this, this);
+        reloadPlugin();
     }
 
     @EventHandler
     public void chunkLoad(ChunkLoadEvent event) {
+        if (!getConfig().getBoolean("remove-on-chunk-load")) {
+            return;
+        }
+
         types.forEach(material -> removeBlock(material, event.getChunk()));
     }
 
@@ -78,16 +62,25 @@ public final class NoSpawner extends JavaPlugin implements Listener {
         final String unknown = c(Optional.ofNullable(getConfig().getString("unknown-world-name")).orElse(""));
         final String unkownBlockName = c(Optional.ofNullable(getConfig().getString("unknown-block-name")).orElse(""));
         final String writeBlockName = c(Optional.ofNullable(getConfig().getString("block-name")).orElse(""));
+        final String reloadComplete = c(Optional.ofNullable(getConfig().getString("reload-complete")).orElse(""));
 
         if (args.length == 0) {
             sender.sendMessage(writeBlockName);
             return true;
         }
 
+        final String arg1 = args[0];
+
+        if (arg1.equalsIgnoreCase("reload")) {
+            reloadPlugin();
+            sender.sendMessage(reloadComplete);
+            return true;
+        }
+
         final Material type;
 
         try {
-            type = Material.valueOf(args[0]);
+            type = Material.valueOf(arg1);
         } catch (Exception exception) {
             sender.sendMessage(unkownBlockName);
             return true;
@@ -165,6 +158,28 @@ public final class NoSpawner extends JavaPlugin implements Listener {
             .getApplicableRegions(location)
             .getRegions()
             .isEmpty();
+    }
+
+    private void reloadPlugin() {
+        types.clear();
+
+        worldGuard = getServer().getPluginManager().getPlugin("WorldGuard") != null &&
+            getServer().getPluginManager().getPlugin("WorldEdit") != null &&
+            getConfig().getBoolean("world-guard-protection");
+
+        if (worldGuard) {
+            getLogger().info("WorldGuard hooked!");
+        }
+
+        getConfig().getStringList("remove-blocks-on-chunk-load").forEach(s -> {
+            final Material material = Material.getMaterial(s);
+
+            if (material == null) {
+                getLogger().warning(String.format("%s is a wrong material name!", s));
+            } else {
+                types.add(material);
+            }
+        });
     }
 
 }
