@@ -174,7 +174,13 @@ public final class NoSpawner extends JavaPlugin implements Listener {
         for (int x = minX; x <= maxX; ++x) {
             for (int y = 0; y <= maxY; ++y) {
                 for (int z = minZ; z <= maxZ; ++z) {
-                    final Block block = chunk.getBlock(x,y,z);
+                    final Block block;
+
+                    try {
+                        block = chunk.getBlock(x,y,z);
+                    } catch (Exception exception) {
+                        continue;
+                    }
 
                     if (block.getType() != type ||
                         thereIsRegion(block.getLocation()) ||
