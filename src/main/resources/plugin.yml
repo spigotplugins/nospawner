@@ -5,3 +5,12 @@ authors: [portlek]
 api-version: 1.13
 softdepend:
   - WorldGuard
+
+commands:
+  removeblock:
+    permission: nospawner.command
+    permission-message: No permission
+    description: Deletes all block that are in the loaded chunks
+    usage: /removeblock <block-name> [world-name]
+    aliases:
+      - rb
