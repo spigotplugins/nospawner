@@ -1,8 +1,6 @@
 package io.github.portlek.nospawner.util;
 
 import io.github.portlek.nospawner.NoSpawner;
-import io.github.portlek.nospawner.NoSpawnerAPI;
-import org.bukkit.Bukkit;
 import org.bukkit.Chunk;
 import org.bukkit.Material;
 import org.bukkit.World;

@@ -4,6 +4,8 @@ check-for-update: true
 # The plugin won't remove block that are in any region
 world-guard-protection: true
 remove-on-chunk-load: true
+remove-on-chunk-load-worlds:
+  - 'world'
 # You can find the all of material name in there
 # for 1.14.4 https://hub.spigotmc.org/javadocs/bukkit/org/bukkit/Material.html
 remove-blocks-on-chunk-load:

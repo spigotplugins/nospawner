@@ -6,7 +6,9 @@ import io.github.portlek.nospawner.file.ConfigOptions;
 import io.github.portlek.nospawner.file.Language;
 import io.github.portlek.nospawner.file.LanguageOptions;
 import io.github.portlek.nospawner.util.*;
-import org.bukkit.*;
+import org.bukkit.Chunk;
+import org.bukkit.Location;
+import org.bukkit.Material;
 import org.bukkit.command.CommandSender;
 import org.bukkit.event.HandlerList;
 import org.bukkit.event.world.ChunkLoadEvent;
@@ -57,7 +59,7 @@ public final class NoSpawnerAPI {
 
         new ListenerBasic<>(
             ChunkLoadEvent.class,
-            event -> config.removeOnChunkLoad,
+            event -> config.removeOnChunkLoad && config.removeOnChunkLoadWorlds.contains(event.getChunk().getWorld()),
             event -> config.removeBlocksOnChunkLoad.forEach(material -> removeBlock(material, event.getChunk()))
         ).register(noSpawner);
     }
