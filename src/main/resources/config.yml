@@ -1,14 +1,10 @@
-permission: '&cYou don''t have permissions to do that!'
-blocks-deleted: '&aAll blocks removed! &7Took (%s ms)'
-unknown-world-name: '&cThere is not world such like that!'
-unknown-block-name: '&cThere is not block such like that!'
-block-name: '&cWrite the block name!'
-reload-complete: '&aRelaod complete!'
+plugin-prefix: '&6[&eNoSpawner&6]'
+plugin-language: 'en'
+check-for-update: true
 # The plugin won't remove block that are in any region
 world-guard-protection: true
-dont-remove-blocks-placed-by-players: true
 remove-on-chunk-load: true
 # You can find the all of material name in there
 # for 1.14.4 https://hub.spigotmc.org/javadocs/bukkit/org/bukkit/Material.html
 remove-blocks-on-chunk-load:
-  - MOB_SPAWNER
+  - SPAWNER

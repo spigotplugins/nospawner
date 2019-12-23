@@ -2,16 +2,6 @@ name: NoSpawner
 version: ${project.version}
 main: io.github.portlek.nospawner.NoSpawner
 authors: [portlek]
-api-version: 1.14
+api-version: 1.13
 softdepend:
   - WorldGuard
-  - WorldEdit
-
-commands:
-  removeblock:
-    permission: nospawner.command
-    permission-message: No permission
-    description: Dlete all block that are in the loaded chunks
-    usage: /removeblock <block-name> [world-name]
-    aliases:
-      - rb
