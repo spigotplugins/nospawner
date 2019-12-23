@@ -49,6 +49,8 @@ public final class NoSpawnerAPI {
         if (!first) {
             config = configOptions.value();
             language = languageOptions.value();
+        } else {
+            checkForUpdate(noSpawner.getServer().getConsoleSender());
         }
 
         HandlerList.unregisterAll(noSpawner);
