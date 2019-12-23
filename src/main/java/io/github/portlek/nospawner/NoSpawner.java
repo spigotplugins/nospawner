@@ -1,11 +1,12 @@
 package io.github.portlek.nospawner;
 
-import com.sk89q.worldguard.bukkit.WorldGuardPlugin;
 import io.github.portlek.location.LocationOf;
 import io.github.portlek.location.StringOf;
 import io.github.portlek.mcyaml.IYaml;
 import io.github.portlek.mcyaml.YamlOf;
 import io.github.portlek.mcyaml.mck.MckFileConfiguration;
+import io.github.portlek.nospawner.util.NewWGUtil;
+import io.github.portlek.nospawner.util.OldWGUtil;
 import org.bukkit.*;
 import org.bukkit.block.Block;
 import org.bukkit.command.Command;
@@ -18,6 +19,7 @@ import org.bukkit.event.block.BlockBreakEvent;
 import org.bukkit.event.block.BlockPlaceEvent;
 import org.bukkit.event.world.ChunkLoadEvent;
 import org.bukkit.plugin.java.JavaPlugin;
+import org.jetbrains.annotations.NotNull;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -85,7 +87,8 @@ public final class NoSpawner extends JavaPlugin implements Listener {
     }
 
     @Override
-    public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
+    public boolean onCommand(@NotNull CommandSender sender, @NotNull Command command, @NotNull String label,
+                             @NotNull String[] args) {
         long time = System.nanoTime();
 
         final String permission = c(Optional.ofNullable(getConfig().getString("permission")).orElse(""));
@@ -196,15 +199,6 @@ public final class NoSpawner extends JavaPlugin implements Listener {
         return blocks;
     }
 
-    private boolean thereIsRegion(Location location) {
-        return worldGuard && !WorldGuardPlugin
-            .inst()
-            .getRegionManager(location.getWorld())
-            .getApplicableRegions(location)
-            .getRegions()
-            .isEmpty();
-    }
-
     private void reloadPlugin() {
         data.create();
 
@@ -236,6 +230,24 @@ public final class NoSpawner extends JavaPlugin implements Listener {
                 types.add(material);
             }
         });
+    }
+
+    private boolean thereIsRegion(@NotNull Location location) {
+        if (!worldGuard) {
+            return true;
+        }
+
+        try {
+            Class.forName("com.sk89q.worldguard.WorldGuard");
+
+            return NewWGUtil.thereIsRegion(location);
+        } catch (Exception ignored) {
+            try {
+                return OldWGUtil.thereIsRegion(location);
+            } catch (Exception ignored2) {
+                throw new IllegalStateException("WorldGuard not found");
+            }
+        }
     }
 
 }
