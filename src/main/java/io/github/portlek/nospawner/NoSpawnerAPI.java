@@ -99,7 +99,7 @@ public final class NoSpawnerAPI {
     }
 
     public void checkForUpdate(@NotNull CommandSender sender) {
-        final UpdateChecker updater = new UpdateChecker(noSpawner, 73486);
+        final UpdateChecker updater = new UpdateChecker(noSpawner, 72799);
 
         try {
             if (updater.checkForUpdates()) {
