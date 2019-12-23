@@ -2,10 +2,9 @@ name: NoSpawner
 version: ${project.version}
 main: io.github.portlek.nospawner.NoSpawner
 authors: [portlek]
-api-version: 1.14
+api-version: 1.13
 softdepend:
   - WorldGuard
-  - WorldEdit
 
 commands:
   removeblock:

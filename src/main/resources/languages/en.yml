@@ -1,0 +1,18 @@
+error:
+  permission: '%prefix% &cYou don''t have permissions to do that!'
+  unknown-world-name: '%prefix% &cThere is not world such like that!'
+  unknown-block-name: '%prefix% &cThere is not block such like that!'
+
+general:
+  reload-complete: '&aReload complete!'
+  new-version-found: '%prefix% &r>> &eNew version found (v%version%)'
+  latest-version: '%prefix% &r>> &aYou''re using the latest version (v%version%)'
+  blocks-deleted: '%prefix% &aAll blocks removed! &7Took (%ms% ms)'
+
+help-message:
+  - '&8====== %prefix% &8======'
+  - '&7/rank &r> &eShows help message.'
+  - '&7/rank help &r> &eShows help message.'
+  - '&7/rank reload &r> &eReload the plugin.'
+  - '&7/rank version &r> &eChecks for update.'
+  - '&7/rank remove <material> <radius> &r> &eRemove blocks.'
