@@ -36,7 +36,7 @@ public final class ConfigOptions implements Scalar<Config> {
         final boolean removeOnChunkLoad = yaml.getOrSet("remove-on-chunk-load", true);
         final List<World> removeOnChunkLoadWorlds = new ArrayList<>();
 
-        for (String worldName : yaml.getOrSet("remove-on-chunk-load-worlds", new ListOf<String>())) {
+        for (String worldName : yaml.getOrSet("remove-on-chunk-load-worlds", new ArrayList<String>())) {
             final World world = Bukkit.getWorld(worldName);
 
             if (world != null) {
